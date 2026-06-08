@@ -1,4 +1,3 @@
-import Navbar from "../components/Navbar";
 import MetricCard from "../components/MetricCard";
 import ProfileCard from "../components/ProfileCard";
 
@@ -12,8 +11,6 @@ const stats = [
 function Dashboard() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <Navbar />
-
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         <section className="space-y-4">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

@@ -13,12 +13,14 @@ signarol/
 │   │   ├── data/                 # static interview question data
 │   │   ├── hooks/                # custom React hooks
 │   │   ├── pages/                # page-level components
-│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Auth.jsx
 │   │   │   ├── Home.jsx
 │   │   │   ├── Interview.jsx
 │   │   │   ├── Landing.jsx
 │   │   │   ├── Profile.jsx
-│   │   │   └── Results.jsx
+│   │   │   ├── RecruiterDashboard.jsx
+│   │   │   ├── Results.jsx
+│   │   │   └── UserProfile.jsx
 │   │   ├── services/             # API calls / backend integration
 │   │   ├── utils/                # helper functions
 │   │   ├── App.jsx
@@ -32,7 +34,7 @@ signarol/
 │   └── vite.config.js
 │
 ├── backend/                      # Backend/API workspace scaffold
-│   ├── src/
+│   ├── app/
 │   │   ├── config/
 │   │   ├── controllers/
 │   │   ├── middleware/

@@ -1,11 +1,8 @@
-import Navbar from "../components/Navbar";
 import MetricCard from "../components/MetricCard";
 
 function Profile() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      <Navbar />
-
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/20">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
