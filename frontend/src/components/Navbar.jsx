@@ -1,6 +1,6 @@
 import logo from "../assets/logo.svg";
 
-function Navbar({ currentPage, onNavigate }) {
+function Navbar({ currentPage, onNavigate, currentUser, onSignOut }) {
   const navItems = [
     { id: "home", label: "Home" },
     { id: "pricing", label: "Pricing" },
@@ -44,20 +44,39 @@ function Navbar({ currentPage, onNavigate }) {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => onNavigate("auth")}
-            className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-100 hover:border-slate-500"
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => onNavigate("auth")}
-            className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-400"
-          >
-            Create Account
-          </button>
+          {currentUser ? (
+            <>
+              <div className="hidden sm:block text-sm text-slate-200">
+                {currentUser.name || currentUser.email}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onSignOut?.();
+                }}
+                className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-100 hover:border-slate-500"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => onNavigate("auth")}
+                className="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-100 hover:border-slate-500"
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate("auth")}
+                className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-400"
+              >
+                Create Account
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>
