@@ -22,7 +22,7 @@ const candidates = [
   },
 ];
 
-function Recruiter() {
+function Recruiter({ onNavigate }) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 px-6 py-10 sm:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
@@ -36,9 +36,18 @@ function Recruiter() {
                 Your hiring pipeline
               </h1>
             </div>
-            <button className="rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-400">
-              Post New Role
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button className="rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-400">
+                Post New Role
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate?.("interview")}
+                className="rounded-full border border-slate-700 px-6 py-3 text-sm font-medium text-slate-100 hover:border-slate-500"
+              >
+                Preview candidate assessment
+              </button>
+            </div>
           </div>
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">

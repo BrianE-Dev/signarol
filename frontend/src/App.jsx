@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Auth from "./pages/Auth";
 import Landing from "./pages/Landing";
 import Pricing from "./pages/Pricing";
@@ -7,16 +8,24 @@ import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import UserProfile from "./pages/UserProfile";
+import Interviewer from "./components/Interviewer";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [currentUser, setCurrentUser] = useState(null);
 
   const routes = {
-    home: <Landing />,
+    home: (
+      <Landing
+        onStartInterview={() =>
+          setCurrentPage(currentUser ? "interview" : "auth")
+        }
+      />
+    ),
     pricing: <Pricing />,
-    recruiter: <RecruiterDashboard />,
-    dashboard: <Dashboard />,
+    interview: <Interviewer />,
+    recruiter: <RecruiterDashboard onNavigate={setCurrentPage} />,
+    dashboard: <Dashboard onNavigate={setCurrentPage} />,
     profile: <Profile />,
     userProfile: <UserProfile />,
     auth: (
@@ -62,7 +71,14 @@ function App() {
         currentUser={currentUser}
         onSignOut={handleSignOut}
       />
-      {routes[currentPage] || <Landing />}
+      {routes[currentPage] || (
+        <Landing
+          onStartInterview={() =>
+            setCurrentPage(currentUser ? "interview" : "auth")
+          }
+        />
+      )}
+      <Footer />
     </>
   );
 }

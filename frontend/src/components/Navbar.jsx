@@ -4,7 +4,12 @@ function Navbar({ currentPage, onNavigate, currentUser, onSignOut }) {
   const navItems = [
     { id: "home", label: "Home" },
     { id: "pricing", label: "Pricing" },
-    { id: "recruiter", label: "Recruiter" },
+    { id: "interview", label: "Interview" },
+    ...(currentUser
+      ? currentUser.recruiter
+        ? [{ id: "recruiter", label: "Recruiter" }]
+        : [{ id: "dashboard", label: "Dashboard" }]
+      : []),
     { id: "profile", label: "Profile" },
   ];
 

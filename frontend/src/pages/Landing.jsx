@@ -33,25 +33,31 @@ const features = [
   },
 ];
 
-function Landing() {
+function Landing({ onStartInterview }) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
         <section className="space-y-8 text-center">
           <p className="text-sm uppercase tracking-[0.3em] text-amber-400">
-            Signal intelligence
+            Signarol
           </p>
           <h1 className="mx-auto max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-            Elite Signal Intelligence for Modern Engineering
+            Verified Engineering Talent Infrastructure
           </h1>
           <p className="mx-auto max-w-2xl text-base text-slate-300 sm:text-lg">
-            Harness advanced signal processing and real-time analytics to
-            transform raw data into actionable intelligence. Built for teams
-            that demand precision and performance.
+            We turn coding performance into standardized hiring signals.
+          </p>
+          <p className="mx-auto max-w-2xl text-base text-slate-400 sm:text-lg">
+            AI-powered engineering assessment platform that measures real-world
+            problem-solving ability under interview conditions.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button className="rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400">
-              Start Free Trial
+            <button
+              type="button"
+              onClick={onStartInterview}
+              className="rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400"
+            >
+              Start Interview Practice
             </button>
             <button className="inline-flex items-center gap-2 rounded-full border border-slate-700 px-6 py-3 text-sm font-medium text-slate-100 transition hover:border-slate-500">
               View Demo

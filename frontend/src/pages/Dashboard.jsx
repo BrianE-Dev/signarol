@@ -8,7 +8,7 @@ const stats = [
   { label: "Interviews Scheduled", value: "23" },
 ];
 
-function Dashboard() {
+function Dashboard({ onNavigate }) {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <main className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
@@ -23,8 +23,12 @@ function Dashboard() {
               </h1>
             </div>
             <div className="flex flex-wrap gap-3">
-              <button className="rounded-full bg-amber-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-400">
-                New Search
+              <button
+                type="button"
+                onClick={() => onNavigate?.("interview")}
+                className="rounded-full bg-amber-500 px-5 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-400"
+              >
+                Launch interview practice
               </button>
               <button className="rounded-full border border-slate-700 px-5 py-2 text-sm font-medium text-slate-100 hover:border-slate-500">
                 Export Report
