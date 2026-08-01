@@ -7,25 +7,28 @@ import Interview from "../pages/Interview";
 import Results from "../pages/Results";
 import { evaluateAnswer } from "../utils/evaluateAnswer";
 
+const QUESTION_TIME_LIMIT_SECONDS = 150;
+
 const tracks = [
   {
     id: "backend",
     label: "Backend",
     description: "APIs, databases, caching, security, and system design.",
-    questions: backendQuestions
+    questions: backendQuestions,
   },
   {
     id: "frontend",
     label: "Frontend",
-    description: "React, browser fundamentals, accessibility, and UI architecture.",
-    questions: frontendQuestions
+    description:
+      "React, browser fundamentals, accessibility, and UI architecture.",
+    questions: frontendQuestions,
   },
   {
     id: "fullstack",
     label: "Full Stack",
     description: "Client-server flow, auth, deployment, and end-to-end design.",
-    questions: fullStackQuestions
-  }
+    questions: fullStackQuestions,
+  },
 ];
 
 function Interviewer() {
@@ -39,7 +42,7 @@ function Interviewer() {
 
   const selectedTrack = useMemo(
     () => tracks.find((track) => track.id === selectedTrackId) ?? tracks[0],
-    [selectedTrackId]
+    [selectedTrackId],
   );
 
   const questions = selectedTrack.questions;
@@ -58,8 +61,8 @@ function Interviewer() {
       {
         question: currentQuestion,
         answer,
-        result: evaluation
-      }
+        result: evaluation,
+      },
     ]);
   }, [answer, currentQuestion, result]);
 
@@ -89,7 +92,7 @@ function Interviewer() {
     setAnswer("");
     setResult(null);
     setHistory([]);
-    setSecondsLeft(questions[0]?.timeLimit ?? 0);
+    setSecondsLeft(QUESTION_TIME_LIMIT_SECONDS);
   }
 
   function resetInterview() {
@@ -115,7 +118,7 @@ function Interviewer() {
     setCurrentIndex(nextIndex);
     setAnswer("");
     setResult(null);
-    setSecondsLeft(questions[nextIndex].timeLimit);
+    setSecondsLeft(QUESTION_TIME_LIMIT_SECONDS);
   }
 
   if (status === "completed") {
