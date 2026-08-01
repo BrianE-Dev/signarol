@@ -27,8 +27,10 @@ function Interview({
   secondsLeft,
   selectedTrack,
 }) {
-  const isLowTime = secondsLeft <= 20;
+  const isLowTime =
+    questionMode === "multiple-choice" ? secondsLeft <= 10 : secondsLeft <= 20;
   const isMultipleChoice = currentQuestion?.type === "multiple-choice";
+  const questionTimeLimit = questionMode === "multiple-choice" ? 30 : 150;
   const answerPrompt = isMultipleChoice
     ? "Choose the best answer"
     : "Your answer";
@@ -91,7 +93,7 @@ function Interview({
                   : "bg-gradient-to-r from-amber-400 to-amber-500"
               }`}
               style={{
-                width: `${((currentIndex + 1) / questions.length) * 100}%`,
+                width: `${Math.max(0, (secondsLeft / questionTimeLimit) * 100)}%`,
               }}
             />
           </div>
