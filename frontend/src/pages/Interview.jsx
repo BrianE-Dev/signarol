@@ -22,11 +22,26 @@ function Interview({
   onReset,
   onSubmit,
   questions,
+  questionMode,
   result,
   secondsLeft,
   selectedTrack,
 }) {
   const isLowTime = secondsLeft <= 20;
+  const isMultipleChoice = currentQuestion?.type === "multiple-choice";
+  const answerPrompt = isMultipleChoice
+    ? "Choose the best answer"
+    : "Your answer";
+  const timerDescription =
+    questionMode === "multiple-choice"
+      ? "You have 30 seconds per question."
+      : "You have exactly 2 minutes and 30 seconds for each question.";
+  const selectedOption = currentQuestion?.options?.find(
+    (option) => option.id === answer,
+  );
+  const correctOption = currentQuestion?.options?.find(
+    (option) => option.id === currentQuestion?.correctOption,
+  );
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
@@ -40,9 +55,7 @@ function Interview({
               <h1 className="text-3xl font-semibold text-white sm:text-4xl">
                 Question {currentIndex + 1} of {questions.length}
               </h1>
-              <p className="text-sm text-slate-300">
-                You have exactly 2 minutes and 30 seconds for each question.
-              </p>
+              <p className="text-sm text-slate-300">{timerDescription}</p>
             </div>
 
             <div
@@ -100,23 +113,64 @@ function Interview({
             </h2>
           </article>
 
-          <label
-            className="block rounded-3xl border border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 sm:p-6"
-            htmlFor="answer"
-          >
-            <span className="mb-3 block text-sm font-semibold text-white">
-              Your answer
-            </span>
-            <textarea
-              id="answer"
-              value={answer}
-              onChange={(event) => onAnswerChange(event.target.value)}
-              placeholder="Explain your thinking clearly and include the important technical terms."
-              disabled={Boolean(result)}
-              rows={8}
-              className="min-h-[220px] w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-500/25"
-            />
-          </label>
+          {isMultipleChoice ? (
+            <div className="rounded-3xl border border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 sm:p-6">
+              <span className="mb-3 block text-sm font-semibold text-white">
+                {answerPrompt}
+              </span>
+              <div className="grid gap-3">
+                {currentQuestion.options.map((option) => {
+                  const isSelected = answer === option.id;
+                  const isCorrect = option.id === currentQuestion.correctOption;
+                  const isWrongSelection =
+                    Boolean(result) && isSelected && !isCorrect;
+
+                  return (
+                    <button
+                      className={`rounded-2xl border px-4 py-3 text-left transition ${
+                        Boolean(result)
+                          ? isCorrect
+                            ? "border-emerald-500 bg-emerald-500/10 text-emerald-100"
+                            : isWrongSelection
+                              ? "border-rose-500 bg-rose-500/10 text-rose-100"
+                              : "border-slate-700 bg-slate-900 text-slate-200 opacity-75"
+                          : isSelected
+                            ? "border-amber-400 bg-amber-500/10 text-amber-100"
+                            : "border-slate-700 bg-slate-900 text-slate-200 hover:border-slate-500"
+                      }`}
+                      disabled={Boolean(result)}
+                      key={option.id}
+                      onClick={() => onAnswerChange(option.id)}
+                      type="button"
+                    >
+                      <span className="mr-2 font-semibold text-amber-300">
+                        {option.id}.
+                      </span>
+                      {option.text}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <label
+              className="block rounded-3xl border border-slate-800 bg-slate-950/70 p-5 text-sm text-slate-200 sm:p-6"
+              htmlFor="answer"
+            >
+              <span className="mb-3 block text-sm font-semibold text-white">
+                {answerPrompt}
+              </span>
+              <textarea
+                id="answer"
+                value={answer}
+                onChange={(event) => onAnswerChange(event.target.value)}
+                placeholder="Explain your thinking clearly and include the important technical terms."
+                disabled={Boolean(result)}
+                rows={8}
+                className="min-h-[220px] w-full rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-500/25"
+              />
+            </label>
+          )}
 
           {result && (
             <aside
@@ -135,18 +189,40 @@ function Interview({
               </div>
               <p className="mb-3 text-sm text-slate-200">{result.feedback}</p>
               <p className="mb-4 text-sm text-slate-300">
-                Matched {result.matchedKeywords ?? 0} of{" "}
-                {result.totalKeywords ??
-                  currentQuestion.expectedKeywords.length}{" "}
-                keywords. Score: {result.score}/{currentQuestion.scoring.base}.
+                {isMultipleChoice ? (
+                  <>
+                    Your choice: {selectedOption?.text ?? answer}. Score:{" "}
+                    {result.score}/{currentQuestion.scoring.base}.
+                  </>
+                ) : (
+                  <>
+                    Matched {result.matchedKeywords ?? 0} of{" "}
+                    {result.totalKeywords ??
+                      currentQuestion.expectedKeywords.length}{" "}
+                    keywords. Score: {result.score}/
+                    {currentQuestion.scoring.base}.
+                  </>
+                )}
               </p>
               <details className="rounded-2xl border border-slate-700 bg-slate-950/60 p-3 text-sm text-slate-200">
                 <summary className="cursor-pointer font-medium text-amber-300">
-                  View ideal answer
+                  {isMultipleChoice ? "View explanation" : "View ideal answer"}
                 </summary>
-                <p className="mt-3 text-slate-300">
-                  {currentQuestion.idealAnswer.trim()}
-                </p>
+                <div className="mt-3 space-y-3 text-slate-300">
+                  {isMultipleChoice && (
+                    <p>
+                      <span className="font-semibold text-white">
+                        Correct answer:
+                      </span>{" "}
+                      {correctOption?.id}. {correctOption?.text}
+                    </p>
+                  )}
+                  <p>
+                    {currentQuestion.idealAnswer?.trim() ??
+                      currentQuestion.explanation?.trim() ??
+                      "No detailed explanation is available for this question."}
+                  </p>
+                </div>
               </details>
             </aside>
           )}
@@ -167,7 +243,7 @@ function Interview({
                 type="button"
               >
                 <Send size={18} aria-hidden="true" />
-                Submit answer
+                {isMultipleChoice ? "Submit choice" : "Submit answer"}
               </button>
             ) : (
               <button
