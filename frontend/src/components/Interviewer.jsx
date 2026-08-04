@@ -17,6 +17,7 @@ import Results from "../pages/Results";
 import { evaluateAnswer } from "../utils/evaluateAnswer";
 
 const QUESTION_TIME_LIMIT_SECONDS = 150;
+const SESSION_QUESTION_COUNT = 5;
 
 const tracks = [
   {
@@ -43,6 +44,12 @@ const tracks = [
   },
 ];
 
+function getRandomSessionQuestions(questions) {
+  return [...questions]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, SESSION_QUESTION_COUNT);
+}
+
 function Interviewer() {
   const [selectedTrackId, setSelectedTrackId] = useState(null);
   const [questionMode, setQuestionMode] = useState("theoretical");
@@ -52,13 +59,14 @@ function Interviewer() {
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
   const [secondsLeft, setSecondsLeft] = useState(0);
+  const [sessionQuestions, setSessionQuestions] = useState([]);
 
   const selectedTrack = useMemo(
     () => tracks.find((track) => track.id === selectedTrackId) ?? null,
     [selectedTrackId],
   );
 
-  const questions = useMemo(() => {
+  const availableQuestions = useMemo(() => {
     if (!selectedTrack) {
       return [];
     }
@@ -68,27 +76,67 @@ function Interviewer() {
       : selectedTrack.questions;
   }, [questionMode, selectedTrack]);
 
+  const questions =
+    status === "not-started" ? availableQuestions : sessionQuestions;
   const currentQuestion = questions[currentIndex];
   const totalScore = history.reduce((sum, item) => sum + item.result.score, 0);
   const questionTimeLimit =
     questionMode === "multiple-choice" ? 30 : QUESTION_TIME_LIMIT_SECONDS;
+
+  const advanceFromQuestion = useCallback(
+    (questionList = questions) => {
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex >= questionList.length) {
+        setStatus("completed");
+        setResult(null);
+        setAnswer("");
+        setSecondsLeft(0);
+        return;
+      }
+
+      setCurrentIndex(nextIndex);
+      setAnswer("");
+      setResult(null);
+      setSecondsLeft(questionTimeLimit);
+    },
+    [currentIndex, questionTimeLimit, questions],
+  );
+
+  const finishCurrentQuestion = useCallback(
+    ({ autoAdvance = false } = {}) => {
+      if (!currentQuestion || result) {
+        return;
+      }
+
+      const evaluation = evaluateAnswer(answer, currentQuestion);
+
+      setHistory((items) => [
+        ...items,
+        {
+          question: currentQuestion,
+          answer,
+          result: evaluation,
+        },
+      ]);
+
+      if (autoAdvance) {
+        advanceFromQuestion();
+        return;
+      }
+
+      setResult(evaluation);
+    },
+    [advanceFromQuestion, answer, currentQuestion, result],
+  );
 
   const handleSubmit = useCallback(() => {
     if (!currentQuestion || result) {
       return;
     }
 
-    const evaluation = evaluateAnswer(answer, currentQuestion);
-    setResult(evaluation);
-    setHistory((items) => [
-      ...items,
-      {
-        question: currentQuestion,
-        answer,
-        result: evaluation,
-      },
-    ]);
-  }, [answer, currentQuestion, result]);
+    finishCurrentQuestion();
+  }, [currentQuestion, finishCurrentQuestion, result]);
 
   useEffect(() => {
     if (status !== "in-progress" || result || !currentQuestion) {
@@ -99,7 +147,9 @@ function Interviewer() {
       setSecondsLeft((seconds) => {
         if (seconds <= 1) {
           window.clearInterval(interval);
-          handleSubmit();
+          window.setTimeout(() => {
+            finishCurrentQuestion({ autoAdvance: true });
+          }, 0);
           return 0;
         }
 
@@ -108,13 +158,16 @@ function Interviewer() {
     }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [currentQuestion, handleSubmit, result, status]);
+  }, [currentQuestion, finishCurrentQuestion, result, status]);
 
   function startInterview() {
-    if (!selectedTrack) {
+    if (!selectedTrack || availableQuestions.length === 0) {
       return;
     }
 
+    const nextQuestions = getRandomSessionQuestions(availableQuestions);
+
+    setSessionQuestions(nextQuestions);
     setStatus("in-progress");
     setCurrentIndex(0);
     setAnswer("");
@@ -130,23 +183,11 @@ function Interviewer() {
     setResult(null);
     setHistory([]);
     setSecondsLeft(0);
+    setSessionQuestions([]);
   }
 
   function goToNextQuestion() {
-    const nextIndex = currentIndex + 1;
-
-    if (nextIndex >= questions.length) {
-      setStatus("completed");
-      setResult(null);
-      setAnswer("");
-      setSecondsLeft(0);
-      return;
-    }
-
-    setCurrentIndex(nextIndex);
-    setAnswer("");
-    setResult(null);
-    setSecondsLeft(questionTimeLimit);
+    advanceFromQuestion();
   }
 
   if (status === "completed") {
