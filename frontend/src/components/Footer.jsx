@@ -1,9 +1,15 @@
+import logo from "../assets/logo.svg";
+
 function Footer() {
   return (
     <footer className="border-t border-slate-800 bg-slate-950/95 text-slate-400">
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div>
-          <p className="text-sm font-semibold text-white">Signarol</p>
+          <img
+            src={logo}
+            alt="Signarol logo"
+            className="h-9 w-36 object-contain"
+          />
           <p className="mt-1 text-sm text-slate-400">
             AI-powered interview practice for engineers and hiring teams.
           </p>

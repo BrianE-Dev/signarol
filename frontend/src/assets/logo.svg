@@ -1,21 +1,51 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 512" role="img" aria-labelledby="title desc">
+  <title id="title">Signarol</title>
+  <desc id="desc">Signarol logo with lightning mark, five stars, and wordmark.</desc>
   <defs>
-    <linearGradient id="logoBorder" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ffd000" />
-      <stop offset="100%" stop-color="#ff6d00" />
+    <linearGradient id="borderGradient" x1="180" y1="62" x2="560" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd800" />
+      <stop offset="0.5" stop-color="#ffb000" />
+      <stop offset="1" stop-color="#ff7900" />
     </linearGradient>
-    <linearGradient id="logoBolt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ffea60" />
-      <stop offset="100%" stop-color="#ff8b00" />
+    <linearGradient id="boltGradient" x1="411" y1="104" x2="304" y2="349" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe600" />
+      <stop offset="0.42" stop-color="#ff9f00" />
+      <stop offset="0.7" stop-color="#ff5a00" />
+      <stop offset="1" stop-color="#e91500" />
     </linearGradient>
+    <linearGradient id="letterGradient" x1="634" y1="126" x2="634" y2="333" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.58" stop-color="#f9fafb" />
+      <stop offset="1" stop-color="#dce0e6" />
+    </linearGradient>
+    <linearGradient id="orangeGradient" x1="1332" y1="128" x2="1332" y2="333" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffc000" />
+      <stop offset="0.5" stop-color="#ffab00" />
+      <stop offset="1" stop-color="#ff7a00" />
+    </linearGradient>
+    <filter id="softShadow" x="-5%" y="-12%" width="110%" height="124%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.45" />
+    </filter>
   </defs>
-  <rect x="6" y="6" width="108" height="108" rx="24" fill="#050811" stroke="url(#logoBorder)" stroke-width="8" />
-  <path d="M66 18 L44 57 H56 L46 88 L74 52 H62 L72 18 Z" fill="url(#logoBolt)" stroke="#ffd34d" stroke-width="1.4" />
-  <g fill="#ffd34d" opacity="0.95">
-    <polygon points="20,86 23,93 30,94 24,98 26,105 20,101 14,105 16,98 10,94 17,93" />
-    <polygon points="38,86 41,93 48,94 42,98 44,105 38,101 32,105 34,98 28,94 35,93" />
-    <polygon points="56,86 59,93 66,94 60,98 62,105 56,101 50,105 52,98 46,94 53,93" />
-    <polygon points="74,86 77,93 84,94 78,98 80,105 74,101 68,105 70,98 64,94 71,93" />
-    <polygon points="92,86 95,93 102,94 96,98 98,105 92,101 86,105 88,98 82,94 89,93" />
+
+  <rect width="2048" height="512" fill="#000000" />
+
+  <g filter="url(#softShadow)">
+    <rect x="182" y="62" width="366" height="366" rx="62" fill="#030303" stroke="url(#borderGradient)" stroke-width="18" />
+    <path d="M448 113 306 257h72L306 358l30-82h-70L448 113Z" fill="url(#boltGradient)" />
+    <path d="M448 113 351 240h95l-140 118 30-82h-70L448 113Z" fill="url(#boltGradient)" opacity="0.98" />
+    <g fill="#ffd400">
+      <path d="m273 359 10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2 10-23Z" />
+      <path d="m322 359 10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2 10-23Z" />
+      <path d="m371 359 10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2 10-23Z" />
+      <path d="m420 359 10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2 10-23Z" />
+      <path d="m469 359 10 23 25 2-19 16 6 25-22-13-22 13 6-25-19-16 25-2 10-23Z" />
+    </g>
+  </g>
+
+  <g filter="url(#softShadow)" font-family="Arial Black, Impact, Montserrat, Arial, sans-serif" font-size="202" font-weight="900" letter-spacing="8">
+    <text x="628" y="334" fill="url(#letterGradient)">SIGN</text>
+    <text x="1220" y="334" fill="url(#orangeGradient)">A</text>
+    <text x="1418" y="334" fill="url(#letterGradient)">ROL</text>
   </g>
 </svg>

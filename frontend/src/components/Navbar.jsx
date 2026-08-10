@@ -16,19 +16,18 @@ function Navbar({ currentPage, onNavigate, currentUser, onSignOut }) {
   return (
     <header className="border-b border-slate-800 bg-slate-950/90 px-6 py-4 backdrop-blur-xl sm:px-8">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center">
           <button
             type="button"
             onClick={() => onNavigate("home")}
-            className="flex items-center rounded-2xl border border-slate-700 bg-slate-950 p-1 shadow-glow transition hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            className="flex items-center rounded-xl border border-slate-700 bg-black px-3 py-2 shadow-glow transition hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
             <img
               src={logo}
               alt="Signarol logo"
-              className="h-11 w-11 rounded-2xl"
+              className="h-10 w-40 object-contain sm:w-48"
             />
           </button>
-          <span className="text-lg font-semibold text-white">Signarol</span>
         </div>
 
         <nav className="hidden gap-8 text-sm font-medium md:flex">
