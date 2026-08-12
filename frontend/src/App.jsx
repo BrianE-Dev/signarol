@@ -14,6 +14,33 @@ function App() {
   const [currentPage, setCurrentPage] = useState("home");
   const [currentUser, setCurrentUser] = useState(null);
 
+  const renderPage = () => {
+    // If user is a recruiter, render RecruiterDashboard without Navbar/Footer
+    if (currentPage === "recruiter") {
+      return <RecruiterDashboard onNavigate={setCurrentPage} />;
+    }
+
+    // For all other pages, show Navbar and Footer
+    return (
+      <>
+        <Navbar
+          currentPage={currentPage}
+          onNavigate={setCurrentPage}
+          currentUser={currentUser}
+          onSignOut={handleSignOut}
+        />
+        {routes[currentPage] || (
+          <Landing
+            onStartInterview={() =>
+              setCurrentPage(currentUser ? "interview" : "auth")
+            }
+          />
+        )}
+        <Footer />
+      </>
+    );
+  };
+
   const routes = {
     home: (
       <Landing
@@ -48,9 +75,14 @@ function App() {
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         setCurrentUser(parsedUser);
-        setCurrentPage(parsedUser.recruiter ? "recruiter" : "dashboard");
+        if (parsedUser.recruiter) {
+          setCurrentPage("recruiter");
+        } else {
+          setCurrentPage("dashboard");
+        }
       }
-    } catch {
+    } catch (error) {
+      console.error('Error loading user:', error);
       setCurrentPage("home");
     }
   }, []);
@@ -58,29 +90,14 @@ function App() {
   const handleSignOut = () => {
     try {
       localStorage.removeItem("signarol-current-user");
-    } catch {}
+    } catch (error) {
+      console.error('Error clearing user data:', error);
+    }
     setCurrentUser(null);
     setCurrentPage("home");
   };
 
-  return (
-    <>
-      <Navbar
-        currentPage={currentPage}
-        onNavigate={setCurrentPage}
-        currentUser={currentUser}
-        onSignOut={handleSignOut}
-      />
-      {routes[currentPage] || (
-        <Landing
-          onStartInterview={() =>
-            setCurrentPage(currentUser ? "interview" : "auth")
-          }
-        />
-      )}
-      <Footer />
-    </>
-  );
+  return <>{renderPage()}</>;
 }
 
 export default App;

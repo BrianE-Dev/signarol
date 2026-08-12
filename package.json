@@ -1,0 +1,19 @@
+{
+  "name": "signarol-root",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm --workspace frontend run dev",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "dev:backend": "npm --workspace backend run dev",
+    "start": "npm --workspace backend run start",
+    "build": "npm --workspace frontend run build",
+    "lint": "npm --workspace frontend run lint"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.18.2"
+  }
+}
