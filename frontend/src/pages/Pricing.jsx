@@ -1,7 +1,7 @@
 const plans = [
   {
     name: "Starter",
-    price: "$29",
+    price: "$15",
     period: "/mo",
     description: "For small teams starting with signal intelligence.",
     features: [
@@ -14,7 +14,7 @@ const plans = [
   },
   {
     name: "Growth",
-    price: "$79",
+    price: "$28",
     period: "/mo",
     description: "Best for growing teams that need real-time insights.",
     features: [
@@ -61,7 +61,7 @@ function Pricing() {
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`rounded-3xl border p-8 shadow-xl shadow-slate-950/20 transition duration-200 ${
+              className={`transform-gpu rounded-3xl border p-8 shadow-xl shadow-slate-950/20 transition-all duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/25 ${
                 plan.highlight
                   ? "border-amber-500 bg-slate-900/95"
                   : "border-slate-800 bg-slate-900/80"
